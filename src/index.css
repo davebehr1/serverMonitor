@@ -10,3 +10,10 @@ body {
 	padding:20px;
 
 }
+
+.server[value="up"]{
+	background-color: green;
+}
+.server[value="down"]{
+	background-color: red;
+}

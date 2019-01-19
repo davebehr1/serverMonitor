@@ -15,7 +15,7 @@ var servers = ["https://cognition.dev.stackworx.cloud/api/status",
 class Server extends React.Component{
 	render(){
 		return(
-			<div className="server">
+			<div className="server" value = {this.props.status}>
 			<p>{this.props.value}</p>
 			<p>{this.props.status}</p>
 			</div>
@@ -38,13 +38,12 @@ class ServerRack extends React.Component{
 
 		request.get(item).on('response',(response) => {
 			if(response.statusCode === 200){
-			//this.setState(active[0])
-			//console.log(this.state.active);
 			this.state.active[key] = "up";
-			}else{
-				this.state.active[key] = "down";
 			}
 			console.log(this.state.active);
+		}).on('error',(err) =>{
+			console.log("error");
+			this.state.active[key] = "down";
 		})
 		)
 	}
@@ -55,6 +54,7 @@ class ServerRack extends React.Component{
 		//return (<Server value = {i}/>);
 	}
 	 componentDidMount() {
+	 this.checkStatus();
       setInterval(() => this.setState({ time: Date.now()}), 10000)
  	}
 
@@ -66,7 +66,6 @@ class ServerRack extends React.Component{
 		return(
 
 			<div>	
-				{this.checkStatus()}
 				{this.state.servers.map((item,key) => 
 
 					<Server value={item} status= {this.state.active[key]} />
