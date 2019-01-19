@@ -3,3 +3,10 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+.server{
+	text-align: center;
+	background-color: green;
+	margin:20px;
+	padding:20px;
+
+}
