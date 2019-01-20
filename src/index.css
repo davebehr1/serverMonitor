@@ -17,3 +17,10 @@ body {
 .server[value="down"]{
 	background-color: red;
 }
+.server[value="other"]{
+	background-color: grey;
+}
+.serverRack{
+	display: flex;
+	flex-direction: column;
+}
