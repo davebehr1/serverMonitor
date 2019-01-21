@@ -164,29 +164,24 @@ class ServerRack extends React.Component{
 	render(){
 			
 		return(
-			
-		/*}	<div className="serverRack">	
-				{ this.stuff = this.state.urls.map((item,key) => 
-					
-				)}
-
-			</div> */
-
 		<div className ="portal">
-			<h1> hello </h1>
-			<div className="production"></div>
-			<div className="staging"></div>
-		
-
-		
 		{
 			this.stuff = this.state.urls.map((item,key) => 
-
+			item.includes("dev") ?	
 			ReactDOM.createPortal(
 			<Server value={item} status= {this.state.active[key]}
 					 previous = {this.state.prev[key]}/>,
 			document.body
-			))}
+			) :
+			ReactDOM.createPortal(
+			<Server value={item} status= {this.state.active[key]}
+					 previous = {this.state.prev[key]}/>,
+			document.body
+
+			)
+			)
+		}
+			
 		</div>
 
 		);
