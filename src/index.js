@@ -10,7 +10,8 @@ var servers = ["https://cognition.dev.stackworx.cloud/api/status",
 			   "https://api.durf.dev.stackworx.io/health",
 			   "https://prima.run/health",
 			   "https://stackworx.io/"
-			   ];			   
+			   ];
+
 class Server extends React.Component{
 	constructor(props){
 		super(props);
@@ -85,6 +86,7 @@ class ServerRack extends React.Component{
 
 		}
 		this.promise = null;
+		this.stuff = null;
 	}
 	checkStatus(){
 		this.state.urls.map((item,key) => {
@@ -164,15 +166,20 @@ class ServerRack extends React.Component{
 		return(
 
 			<div className="serverRack">	
-				{this.state.urls.map((item,key) => 
+				{ this.stuff = this.state.urls.map((item,key) => 
 					<Server value={item} status= {this.state.active[key]}
 					 previous = {this.state.prev[key]}/>
 				)}
 
 			</div>
+
+
 		);
 	}
 }
+
+
+
 
 function milliToMinutes(millis){
 	var minutes = Math.floor(millis / 60000);
@@ -180,5 +187,5 @@ function milliToMinutes(millis){
 	return minutes + " : " + (seconds < 10 ? '0' : '') + seconds; 
 }
 
-ReactDOM.render(<ServerRack />, document.getElementById('root'));
+ReactDOM.render(<ServerRack/>, document.getElementById('root'));
 //registerServiceWorker();
