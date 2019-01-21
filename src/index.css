@@ -4,6 +4,7 @@ body {
   font-family: sans-serif;
   background-color:#dbdbdb;
   color: #707070;
+  padding-bottom: 20px;
 }
 .server{
 	text-align: center;
@@ -12,12 +13,17 @@ body {
 	margin-top: 20px;
 	margin-bottom: 5px;
 	padding:20px;
-	width:70%;
-	box-shadow: 5px 10px 20px #888888;
+	width:70%; 
 	border-style: solid;
-  	border-width: 5px;
+  border-width: 3px;
+  border-color: #b2b2b2;
+  box-shadow: 0 0 0 5px white, 5px 10px 20px #888888;
 }
 
+.time{
+  font-weight: bold;
+  font-size: 18px;
+}
 
 .statusbar{
 	width: 50% !important;
@@ -49,17 +55,32 @@ body {
     font-size: 20px;
 
 }
-.statusBr[value="other"]{
-	background-color: grey;
+.statusBar[value="other"]{
+	background-color: #b2b2b2;
 	width: 50% !important;
-    margin: 0 auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    color:white;
-    font-size: 20px;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color:white;
+  font-size: 20px;
 
+}
+.statusBar[value="up"]:hover{
+  background-color: #83c176;
+  cursor: pointer;
+}
+
+.statusBar[value="down"]:hover{
+  background-color: #a85a5a;
+  cursor: pointer;
+}
+
+.statusBar[value="other"]:hover{
+  background-color: #7c7c7c;
+  cursor: pointer;
 }
 .serverRack{
 	display: flex;
 	flex-direction: column;
+
 }

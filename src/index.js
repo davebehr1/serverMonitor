@@ -17,28 +17,36 @@ class Server extends React.Component{
 		this.state = {
 			upTime: 0,
 			displayPrevious: false
+			
 		};
 		this.handleClick = this.handleClick.bind(this);
+		this.startTime = null;
+		this.ticking = false;
 	}
+
 	componentDidMount(){
 		//if(this.props.status === "up"){
 		const startTime = Date.now() - this.state.upTime;
 		this.timer = setInterval(() =>{
-			this.setState({upTime: Date.now() - startTime});
+			this.setState({	upTime: Date.now() - startTime });
+			this.ticking = true;
 		});
 		//}
 
 	}
 	componentDidUpdate(){
-		if(this.props.status === "down"){
+		if(this.props.status === "other" || this.props.status === "down"){
 			clearInterval(this.timer);
+			this.ticking = false;
+			//this.setState({ticking:false});
 			//this.setState({upTime: this.state.upTime - 30000})
 		}
-		if(this.props.previous === "down" && this.props.status === "up"){
-			console.log("GOOOOOOOOOOOOAAAAAAAAAAAAAAAAALLLLLLLLLLL");
-			const startTime = Date.now() - this.state.upTime;
+		if((this.props.status === "up" && !this.ticking) || (this.props.status === "up" && !this.ticking)){
+			console.log("THE TIME HAS BEEN RESTARTED");
+			this.startTime = Date.now() - this.state.upTime;
 			this.timer = setInterval(() =>{
-			this.setState({upTime: Date.now() - startTime});
+			this.setState({upTime: Date.now() - this.startTime});
+			this.ticking = true;
 		});
 		}
 
@@ -52,12 +60,12 @@ class Server extends React.Component{
 	render(){
 		return(
 			<div className="server" value = {this.props.status} onClick = {this.handleClick}>
-			<h3>Server: <br /> {this.props.value}</h3>
+			<h3><u>Server:</u><br /> {this.props.value}</h3>
 			<div className="statusBar" value = {this.props.status}>{this.props.status}</div>
 			{this.state.displayPrevious === true && this.props.previous != null ?
 				(<p>Last response {this.props.previous}</p>) : (<p> no previous response </p>) }
 
-			<p>upTime : {milliToMinutes(this.state.upTime)}</p>
+			<p className="time">{milliToMinutes(this.state.upTime)}</p>
 			</div>
 			);
 	}
@@ -74,11 +82,12 @@ class ServerRack extends React.Component{
 			prev:Array(servers.length).fill(null),
 			active: Array(servers.length).fill(null)
 
+
 		}
+		this.promise = null;
 	}
 	checkStatus(){
-		this.state.urls.map((item,key) => 
-
+		this.state.urls.map((item,key) => {
 
 		request.get(item).on('response',(response) => {
 		
@@ -93,29 +102,26 @@ class ServerRack extends React.Component{
 			});
 			//this.state.active[key] = "up";
 			}else{
-				activeCopy[key] = "other";
+				activeCopy[key] = "down";
 				this.setState({
 				active: activeCopy
 				});
 			}
-			console.log(this.state.active);
+			console.log("KEY: " + key);
 		}).on('error',(err) =>{
 			let activeCopy = this.state.active.slice();
 			//let activeCopyTwo = this.state.active;
-			activeCopy[key] = "down";
-			console.log("error");
+			activeCopy[key] = "other";
+			//console.log("error");
 			this.setState({
 				active: activeCopy
 			});
-			console.log("error");
+			console.log("KEY: " + key);
 		})
-		)
-		this.pushHistory();
 
-		// this.setState((prevState) => {
-  //     		const newHistory = prevState.history.slice();
-  //     		console.log("NEW HISTORY: " + newHistory);
-  //     	});
+		});
+
+		 this.pushHistory();
 
 		setTimeout(function(){
       		this.checkStatus();
@@ -136,12 +142,14 @@ class ServerRack extends React.Component{
  		if(this.state.history.length < 2){
  			return;
  		}
+		console.log("push previous history");
  		const newHistory = this.state.history.slice();
  		console.log(newHistory[this.state.history.length -2].servers);
  		this.setState({'prev' : newHistory[this.state.history.length -1].servers});
  	}
 
 	 pushHistory() {
+	 	console.log("pushing history");
 	 	const prev = this.state.active.slice();
 	    const history = this.state.history.slice();
 	    this.setState({
