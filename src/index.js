@@ -72,6 +72,8 @@ class Server extends React.Component{
 	}
 }
 
+const DocumentRoot = document.getElementById("root");
+
 class ServerRack extends React.Component{
 	constructor(props){
 		super(props);
@@ -87,6 +89,7 @@ class ServerRack extends React.Component{
 		}
 		this.promise = null;
 		this.stuff = null;
+		this.el = document.createElement('div');
 	}
 	checkStatus(){
 		this.state.urls.map((item,key) => {
@@ -131,8 +134,11 @@ class ServerRack extends React.Component{
 
 	}
 	 componentDidMount() {
+	 	// renderInitial();
+	 DocumentRoot.appendChild(this.el);
 	 this.checkStatus(); 	
 	 console.log("checking health");
+
 	
  	}
 
@@ -162,7 +168,7 @@ class ServerRack extends React.Component{
 	  }
 
 	render(){
-			
+			// renderInitial();
 		return(
 		<div className ="portal">
 		{
@@ -188,6 +194,35 @@ class ServerRack extends React.Component{
 	}
 }
 
+// class Room extends React.Component{
+// 	componentDidMount(){
+		
+// 	}
+// 	render(){
+// 		return(
+// 			<div className="serverRoom">
+// 				<h1>HELLO</h1>
+// 				<div className="production"></div>
+// 				<div className="staging"></div>
+// 				<ServerRack/>
+				
+// 			</div>
+// 			)
+// 	}
+// }
+
+function renderInitial(){
+	ReactDOM.render(
+		<div className="serverRoom">
+				<h1>HELLO</h1>
+				<div className="production"></div>
+				<div className="staging"></div>
+				
+		</div>,
+		document.body
+		)
+}
+
 
 
 
@@ -198,6 +233,5 @@ function milliToMinutes(millis){
 	var seconds = ((millis % 60000) / 1000).toFixed(0);
 	return minutes + " : " + (seconds < 10 ? '0' : '') + seconds; 
 }
-
 ReactDOM.render(<ServerRack/>, document.getElementById('root'));
 //registerServiceWorker();
