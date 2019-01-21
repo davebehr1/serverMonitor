@@ -12,13 +12,52 @@ var servers = ["https://cognition.dev.stackworx.cloud/api/status",
 			   "https://stackworx.io/"
 			   ];			   
 class Server extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+			upTime: 0,
+			displayPrevious: false
+		};
+		this.handleClick = this.handleClick.bind(this);
+	}
+	componentDidMount(){
+		//if(this.props.status === "up"){
+		const startTime = Date.now() - this.state.upTime;
+		this.timer = setInterval(() =>{
+			this.setState({upTime: Date.now() - startTime});
+		});
+		//}
+
+	}
+	componentDidUpdate(){
+		if(this.props.status === "down"){
+			clearInterval(this.timer);
+			//this.setState({upTime: this.state.upTime - 30000})
+		}
+		if(this.props.previous === "down" && this.props.status === "up"){
+			console.log("GOOOOOOOOOOOOAAAAAAAAAAAAAAAAALLLLLLLLLLL");
+			const startTime = Date.now() - this.state.upTime;
+			this.timer = setInterval(() =>{
+			this.setState({upTime: Date.now() - startTime});
+		});
+		}
+
+	}
+
+	handleClick(){
+		this.setState({
+			displayPrevious: !this.state.displayPrevious
+		});
+	}
 	render(){
 		return(
-			<div className="server" value = {this.props.status} onClick = {() => this.props.onClick()}>
-			<p>{this.props.value}</p>
-			<p>{this.props.status}</p>
-			{this.props.previous === null ? 
-				(<p> no previous response</p>) : (<p>Last response {this.props.previous}</p>)}
+			<div className="server" value = {this.props.status} onClick = {this.handleClick}>
+			<h3>Server: <br /> {this.props.value}</h3>
+			<div className="statusBar" value = {this.props.status}>{this.props.status}</div>
+			{this.state.displayPrevious === true && this.props.previous != null ?
+				(<p>Last response {this.props.previous}</p>) : (<p> no previous response </p>) }
+
+			<p>upTime : {milliToMinutes(this.state.upTime)}</p>
 			</div>
 			);
 	}
@@ -42,9 +81,12 @@ class ServerRack extends React.Component{
 
 
 		request.get(item).on('response',(response) => {
+		
 			let activeCopy = this.state.active.slice();
+	
 			if(response.statusCode === 200){
 			
+
 			activeCopy[key] = "up";
 			this.setState({
 				active: activeCopy
@@ -52,6 +94,9 @@ class ServerRack extends React.Component{
 			//this.state.active[key] = "up";
 			}else{
 				activeCopy[key] = "other";
+				this.setState({
+				active: activeCopy
+				});
 			}
 			console.log(this.state.active);
 		}).on('error',(err) =>{
@@ -78,39 +123,32 @@ class ServerRack extends React.Component{
 
 	}
 	 componentDidMount() {
-	 this.checkStatus();
-	 //console.log("checking health");
+	 this.checkStatus(); 	
+	 console.log("checking health");
 	
  	}
 
- 	handleClick(i){
+ 	componentDidUpdate(){
+ 		//console.log("Component updated");
+ 	}
+
+ 	pushPrevious(){
  		if(this.state.history.length < 2){
  			return;
  		}
-
- 		this.setState((previousState) => {
- 			const history = previousState.history.slice();
- 			const newPrevious = previousState.prev.slice();
-
- 			newPrevious[i] = history[history.length-2].servers[i];
- 			return {'prev' : newPrevious};
- 		});
- 		alert(i);
-
-
+ 		const newHistory = this.state.history.slice();
+ 		console.log(newHistory[this.state.history.length -2].servers);
+ 		this.setState({'prev' : newHistory[this.state.history.length -1].servers});
  	}
 
 	 pushHistory() {
 	 	const prev = this.state.active.slice();
 	    const history = this.state.history.slice();
-	    // const current =  history[history.length - 1];
-	    // const servers = current.servers.slice();
-	    // console.log("SERVERS: " + servers);
 	    this.setState({
 	      history: history.concat([{
 	        servers: prev
 	      }])
-	    });
+	    }, () => console.log("hey there"), this.pushPrevious());
 	  }
 
 	render(){
@@ -119,12 +157,19 @@ class ServerRack extends React.Component{
 
 			<div className="serverRack">	
 				{this.state.urls.map((item,key) => 
-					<Server value={item} onClick = {() => this.handleClick(key)} status= {this.state.active[key]} previous = {this.state.prev[key]}/>
+					<Server value={item} status= {this.state.active[key]}
+					 previous = {this.state.prev[key]}/>
 				)}
 
 			</div>
 		);
 	}
+}
+
+function milliToMinutes(millis){
+	var minutes = Math.floor(millis / 60000);
+	var seconds = ((millis % 60000) / 1000).toFixed(0);
+	return minutes + " : " + (seconds < 10 ? '0' : '') + seconds; 
 }
 
 ReactDOM.render(<ServerRack />, document.getElementById('root'));

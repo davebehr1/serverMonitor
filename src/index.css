@@ -2,23 +2,62 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color:#dbdbdb;
+  color: #707070;
 }
 .server{
 	text-align: center;
-	background-color: green;
-	margin:20px;
+	background-color: white;
+	margin:0 auto;
+	margin-top: 20px;
+	margin-bottom: 5px;
 	padding:20px;
+	width:70%;
+	box-shadow: 5px 10px 20px #888888;
+	border-style: solid;
+  	border-width: 5px;
+}
+
+
+.statusbar{
+	width: 50% !important;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
 
 }
 
-.server[value="up"]{
-	background-color: green;
+.statusBar[value="up"]{
+	background-color: #b1ffa0;
+	width: 50% !important;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color:white;
+    font-weight: bold;
+    font-size: 20px;
+
 }
-.server[value="down"]{
-	background-color: red;
+.statusBar[value="down"]{
+	background-color: #ff8c8c;
+	width: 50% !important;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color:white;
+    font-weight: bold;
+    font-size: 20px;
+
 }
-.server[value="other"]{
+.statusBr[value="other"]{
 	background-color: grey;
+	width: 50% !important;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color:white;
+    font-size: 20px;
+
 }
 .serverRack{
 	display: flex;
