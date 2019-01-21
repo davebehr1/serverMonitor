@@ -112,7 +112,7 @@ class ServerRack extends React.Component{
 				active: activeCopy
 				});
 			}
-			console.log("KEY: " + key);
+	
 		}).on('error',(err) =>{
 			let activeCopy = this.state.active.slice();
 			//let activeCopyTwo = this.state.active;
@@ -121,7 +121,7 @@ class ServerRack extends React.Component{
 			this.setState({
 				active: activeCopy
 			});
-			console.log("KEY: " + key);
+		
 		})
 
 		});
@@ -193,23 +193,6 @@ class ServerRack extends React.Component{
 		);
 	}
 }
-
-// class Room extends React.Component{
-// 	componentDidMount(){
-		
-// 	}
-// 	render(){
-// 		return(
-// 			<div className="serverRoom">
-// 				<h1>HELLO</h1>
-// 				<div className="production"></div>
-// 				<div className="staging"></div>
-// 				<ServerRack/>
-				
-// 			</div>
-// 			)
-// 	}
-// }
 
 function renderInitial(){
 	ReactDOM.render(
