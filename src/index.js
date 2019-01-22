@@ -4,7 +4,7 @@ import './index.css';
 const request = require('request');
 
 
-//import registerServiceWorker from './registerServiceWorker';
+//Array of Servers that will be tested
 var servers = ["https://cognition.dev.stackworx.cloud/api/status",
 			   "https://ord.dev.stackworx.io/health",
 			   "https://api.durf.dev.stackworx.io/health",
@@ -27,21 +27,17 @@ class Server extends React.Component{
 	}
 
 	componentDidMount(){
-		//if(this.props.status === "up"){
 		const startTime = Date.now() - this.state.upTime;
 		this.timer = setInterval(() =>{
 			this.setState({	upTime: Date.now() - startTime });
 			this.ticking = true;
 		});
-		//}
 
 	}
 	componentDidUpdate(){
 		if(this.props.status === "other" || this.props.status === "down"){
 			clearInterval(this.timer);
 			this.ticking = false;
-			//this.setState({ticking:false});
-			//this.setState({upTime: this.state.upTime - 30000})
 		}
 		if((this.props.status === "up" && !this.ticking) || (this.props.status === "up" && !this.ticking)){
 			console.log("THE TIME HAS BEEN RESTARTED");
@@ -185,8 +181,8 @@ class ServerRack extends React.Component{
 	  }
 
 	render(){
-			// renderInitial();
 		return(
+		// portal conditionally renders a Server to either the production or staging divs based on if the url contains dev
 		<div className ="portal">
 		{
 			this.stuff = this.state.urls.map((item,key) => 
@@ -211,27 +207,12 @@ class ServerRack extends React.Component{
 	}
 }
 
-function renderInitial(){
-	ReactDOM.render(
-		<div className="serverRoom">
-				<h1>HELLO</h1>
-				<div className="production"></div>
-				<div className="staging"></div>
-				
-		</div>,
-		document.body
-		)
-}
-
-
-
-
-
-
+//this helper function converts milliseconds to minutes and seconds
 function milliToMinutes(millis){
 	var minutes = Math.floor(millis / 60000);
 	var seconds = ((millis % 60000) / 1000).toFixed(0);
 	return minutes + " : " + (seconds < 10 ? '0' : '') + seconds; 
 }
+
 ReactDOM.render(<ServerRack/>, document.getElementById('root'));
 //registerServiceWorker();
