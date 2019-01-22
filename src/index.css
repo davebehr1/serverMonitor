@@ -2,7 +2,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background-color:#dbdbdb;
   color: #707070;
   padding-bottom: 20px;
 }
@@ -83,4 +82,17 @@ body {
 	display: flex;
 	flex-direction: column;
 
+}
+.staging, .production > h1{
+  text-align: center;
+}
+.staging, .production{
+   background-color:#dbdbdb;
+   padding: 20px;
+   margin:20px;
+   flex:1;
+}
+.environment{
+  display: flex;
+  flex-wrap: wrap;
 }

@@ -89,7 +89,11 @@ class ServerRack extends React.Component{
 		}
 		this.promise = null;
 		this.stuff = null;
+		this.parentDiv = document.createElement('div');
 		this.el = document.createElement('div');
+		this.el2 = document.createElement('div');
+		this.stagingHeading = document.createElement('h1');
+		this.productionHeading = document.createElement('h1');
 	}
 	checkStatus(){
 		this.state.urls.map((item,key) => {
@@ -135,7 +139,19 @@ class ServerRack extends React.Component{
 	}
 	 componentDidMount() {
 	 	// renderInitial();
-	 DocumentRoot.appendChild(this.el);
+	 DocumentRoot.appendChild(this.parentDiv);
+	 this.parentDiv.setAttribute("class","environment");
+
+	 this.parentDiv.insertBefore(this.el, this.parentDiv.firstChild);
+	 this.parentDiv.insertBefore(this.el2, this.parentDiv.firstChild);
+
+	 this.stagingHeading.textContent="Staging";
+	 this.productionHeading.textContent ="Production";
+	 this.el.insertBefore(this.stagingHeading, this.el.firstChild);
+	 this.el2.insertBefore(this.productionHeading, this.el2.firstChild);
+
+	 this.el.setAttribute("class","staging");
+	 this.el2.setAttribute("class","production");
 	 this.checkStatus(); 	
 	 console.log("checking health");
 
@@ -177,12 +193,12 @@ class ServerRack extends React.Component{
 			ReactDOM.createPortal(
 			<Server value={item} status= {this.state.active[key]}
 					 previous = {this.state.prev[key]}/>,
-			document.body
+			this.el
 			) :
 			ReactDOM.createPortal(
 			<Server value={item} status= {this.state.active[key]}
 					 previous = {this.state.prev[key]}/>,
-			document.body
+			this.el2
 
 			)
 			)
