@@ -96,3 +96,6 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
+h3{
+  word-wrap: break-word;
+}

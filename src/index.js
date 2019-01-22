@@ -9,7 +9,8 @@ var servers = ["https://cognition.dev.stackworx.cloud/api/status",
 			   "https://ord.dev.stackworx.io/health",
 			   "https://api.durf.dev.stackworx.io/health",
 			   "https://prima.run/health",
-			   "https://stackworx.io/"
+			   "https://stackworx.io/",
+			   "https://google.com"
 			   ];
 
 class Server extends React.Component{
