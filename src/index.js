@@ -131,7 +131,7 @@ class ServerRack extends React.Component{
 
 		setTimeout(function(){
       		this.checkStatus();
-   		 }.bind(this), 30000);
+   		 }.bind(this), 300000);
 
 	}
 	 componentDidMount() {
